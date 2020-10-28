@@ -3,13 +3,13 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import "../../index.css";
 import DeleteIcon from "../../resources/icons/campaign_delete_btn.png";
 import InputBase from '@material-ui/core/InputBase';
-import * as CampaignInterface from "../../models/campaign";
-import InputCampain from "./InputCampain";
+import * as campaignCostInterface from "../../models/campaignCost";
+import InputCampainCost from "./InputCampainCost";
 interface Props {
-  data : CampaignInterface.Campaign,
+  data : campaignCostInterface.CampaignCost,
   indexOfData : number,
   deleteData(idx : number) : void,
-  updateData(idx : number, input : CampaignInterface.Campaign) : void;
+  updateData(idx : number, input : campaignCostInterface.CampaignCost) : void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -104,18 +104,48 @@ const useStyles = makeStyles((theme: Theme) =>
       deleteBox : {
           width : 42,
           height : 42,
-      }
+      },
+      numberFormat : {
+        width : 220,
+        height: 60,
+      fontFamily : "NanumSquareR, sans-serif",
+      color : "#000000",
+      fontSize : 24,
+      lineHeight: 2.5,
+      letterSpacing : -0.6,
+      textAlign: "right",
+      justifyContent: "center",
+      
+    },
+    surFix : {
+      fontFamily: "NanumSquareR, sans-serif",
+      lineHeight: 1.13,
+      fontSize: 24,
+      letterSpacing: -0.6,
+      color: "black",
+      paddingLeft : 10,
+      textAlign: "center",
+      justifyContent: "center",
+      display: "flex",
+      flexDirection: "column",
+      flex : 1,
+      
+  },
+  moneyFormat : {
+      display : "flex",
+      flexDirection : "row",
+  }
   })
 );
 
-const EditCampain: React.FC<Props> = (props) => {
+const EditCampaignCost: React.FC<Props> = (props) => {
   const [isEdit, setIsEdit] = useState(true);
   const classes = useStyles();
   const changeEditState = () => {
     setIsEdit(false);
   }
 
-  const updateData = (data : CampaignInterface.Campaign) => {
+  const updateData = (data : campaignCostInterface.CampaignCost) => {
     props.updateData(props.indexOfData, data);
     setIsEdit(true)
   }
@@ -125,29 +155,34 @@ const EditCampain: React.FC<Props> = (props) => {
       <>
         <img className={classes.deleteBox} src={DeleteIcon} onClick={()=> props.deleteData(props.indexOfData)} alt="profile"></img>
       <div className={classes.dateInput}>
-          <div className ={classes.dateBox}>{props.data.start}</div>
-          <div className={classes.textCenter}> ~ </div>
-          <div className ={classes.dateBox}>{props.data.end}</div>
+          <div className ={classes.dateBox}>{props.data.useDate}</div>
       </div>
       <div className={classes.detailInput}> 
-      {props.data.name}
+      {props.data.content}
+      </div>
+      <div className={classes.moneyFormat}>
+        <div className={classes.numberFormat}>
+            {props.data.cost!.toLocaleString("kr-KR")}
+        </div>
+        <div className={classes.surFix}>
+            원
+        </div>
       </div>
       <button className={classes.button} onClick={changeEditState}> 수정</button>
       </>
     )
   }
   const EditView = () => {
-    return <InputCampain data={props.data} addDataList={updateData}  />
+    return <InputCampainCost data={props.data} addDataList={updateData}  />
   }
   
   return (
     <div className={classes.root}>
       {
         isEdit ? <DataView/> : <EditView/>
-
       }
     </div>
   );
 };
 
-export default EditCampain;
+export default EditCampaignCost;

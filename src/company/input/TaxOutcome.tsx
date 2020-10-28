@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import "../../index.css";
 import classes from "*.module.css";
-import * as TaxIncomInterface from "../../models/taxIncome";
+import * as TaxOutcomInterface from "../../models/taxOutcome";
+import NumberFormat from "react-number-format";
 interface Props {
   viewName : string ;
 }
@@ -108,7 +109,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "right",
       justifyContent: "center",
       display: "flex",
-      flexDirection: "column",
+      flexDirection: "row",
       marginRight: 130,
     },
     subContents: {
@@ -128,17 +129,100 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "space-around",
       flex: 5,
     },
+    surFix : {
+        fontFamily: "NanumSquareR, sans-serif",
+        lineHeight: 1.13,
+        fontSize: 24,
+        letterSpacing: -0.6,
+        color: "black",
+        textAlign: "right",
+        justifyContent: "center",
+        paddingLeft : 10,
+        
+    },
+    surFix2 : {
+        fontFamily: "NanumSquareR, sans-serif",
+      lineHeight: 1.13,
+      fontSize: 24,
+      letterSpacing: -0.6,
+        color: "white",
+        textAlign: "right",
+        justifyContent: "center",
+        paddingLeft : 10,
+        
+    },
+    moneyDetail : {
+        fontFamily: "NanumSquareR, sans-serif",
+        lineHeight: 1.13,
+        fontSize: 24,
+        letterSpacing: -0.6,
+        color: "black",
+        textAlign: "right",
+        justifyContent: "center",
+        paddingRight : 30,
+        width : 220,
+        borderColor : "white",
+        backgroundColor : "#e8f2ff",
+        borderRadius : 3,
+    },
+    lastMoney : {
+        fontFamily: "NanumSquareR, sans-serif",
+      lineHeight: 1.13,
+      fontSize: 24,
+      letterSpacing: -0.6,
+      color: "white",
+      textAlign: "right",
+      justifyContent: "center",
+      display: "flex",
+      flexDirection: "column",
+      marginRight: 148,
+      borderColor : "white",
+        backgroundColor : "#e8f2ff",
+        borderRadius : 3,
+        paddingRight : 30,
+        width : 220,
+    },
+    setting : {
+        
+            fontFamily: "NanumSquareR, sans-serif",
+            lineHeight: 1.13,
+            fontSize: 24,
+            letterSpacing: -0.6,
+            color: "white",
+            textAlign: "center",
+            justifyContent: "center",
+            alignItems : "center",
+            display: "flex",
+            flexDirection: "row",
+            marginRight: 148,
+        
+    }
   })
 );
 
-const LastYearIncome: React.FC<Props> = (props) => {
+const TaxOutcome: React.FC<Props> = (props) => {
   const classes = useStyles();
-  const [dataResult, setDataResult] = useState<TaxIncomInterface.TaxIncome>(TaxIncomInterface.defaultData);
-
+  const [dataResult, setDataResult] = useState<TaxOutcomInterface.TaxOutcome>(TaxOutcomInterface.defaultData);
 
   useEffect( ()=> {
-
-  },[]);
+  },[dataResult]);
+  const updateResult = (value :  number | undefined, fieldName : string) => {
+      setDataResult({...dataResult, [fieldName]: value === undefined ? 0 : value})
+  } 
+  
+  const inputSummary = (title: string, fieldName: string) => {
+    const dataMap = new Map(Object.entries(dataResult));
+    return (
+      <>
+        <div className={classes.summaryTitle}>{title}</div>
+        <div  className={classes.setting} >
+        <NumberFormat className={classes.moneyDetail}  placeholder={"000,000,000,000"} value={dataMap.get(fieldName) ? Number(dataMap.get(fieldName)) : undefined} thousandSeparator 
+        onValueChange={(values) => updateResult(values.floatValue, fieldName)} isNumericString={true} ></NumberFormat>
+        <div className={classes.surFix2}> 원</div>
+        </div>
+      </>
+    );
+  };
 
   const viewSummary = (title: string, money: number) => {
     return (
@@ -148,17 +232,21 @@ const LastYearIncome: React.FC<Props> = (props) => {
       </>
     );
   };
-  const viewContents = (middleTitle: string, money: number) => {
+  const viewContents = (middleTitle: string, fieldName: string) => {
+    const dataMap = new Map(Object.entries(dataResult));
     return (
       <div className={classes.flexRow}>
         <div className={classes.contentTitle}>{middleTitle}</div>
-        <div className={classes.money2}>{money ? money.toLocaleString("kr-KR") : 0} 원</div>
+        <div className={classes.money2}>
+        <NumberFormat className={classes.moneyDetail} placeholder={"000,000,000,000"} value={dataMap.get(fieldName) ? Number(dataMap.get(fieldName)) : undefined} thousandSeparator 
+        onValueChange={(values) => updateResult(values.floatValue, fieldName)} isNumericString={true} ></NumberFormat>
+        <div className={classes.surFix}> 원</div>
+        </div>
       </div>
     );
   };
   const middleContents = (title : string,  data: any) => {
     const keyList = Object.keys(data);
-    const dataMap = new Map(Object.entries(dataResult));
     return(
       <div className={classes.subContents}>
       <div className={classes.contentTitle}> {`${title}`}</div>
@@ -166,7 +254,7 @@ const LastYearIncome: React.FC<Props> = (props) => {
         {
           keyList.map(value => {
             const name = data[value];
-            return (viewContents(name, dataMap.get(value)));
+            return (viewContents(name, value));
           })
         }
       </div>
@@ -186,29 +274,30 @@ const LastYearIncome: React.FC<Props> = (props) => {
   return (
     <div className={classes.root}>
       <div className={classes.carryForward}>
-        {viewSummary("전기이월액", sumData(TaxIncomInterface.carriedMonth))}
+        {inputSummary("차기이월액", "carriedMonth")}
       </div>
       <div className={classes.business}>
   <div className={classes.title}>{`사업${props.viewName}`}</div>
         <div className={classes.contentBox}>
-          {middleContents("기부금", TaxIncomInterface.donation)}
-          {middleContents("지원금", TaxIncomInterface.fund)}
-          {middleContents("기타수익", TaxIncomInterface.etcBusinessProfit)}
+          {middleContents("운영비", TaxOutcomInterface.operation)}
+          {middleContents("사업비", TaxOutcomInterface.business)}
+          {middleContents("사업비", TaxOutcomInterface.unknown)}
+          {middleContents("기타지출", TaxOutcomInterface.etcBusinessCost)}
         </div>
       </div>
-      <div className={classes.summary}>{viewSummary(`사업${props.viewName} 합계`, sumData(TaxIncomInterface.business))}</div>
+      <div className={classes.summary}>{viewSummary(`사업${props.viewName} 합계`, sumData(TaxOutcomInterface.totalBusiness))}</div>
       <div className={classes.nobusiness}>
-        <div className={classes.title}>비사업수익</div>
+        <div className={classes.title}>{`비사업${props.viewName}`}</div>
         <div className={classes.contentBox}>
-        {middleContents("기타수익", TaxIncomInterface.etcNonBusinessProfit)}
+        {middleContents("기타지출", TaxOutcomInterface.etcNonBusinessCost)}
         </div>
       </div>
-      <div className={classes.summary}>{viewSummary(`비사업${props.viewName} 합계`, sumData(TaxIncomInterface.etcNonBusinessProfit))}</div>
+      <div className={classes.summary}>{viewSummary(`비사업${props.viewName} 합계`, sumData(TaxOutcomInterface.etcNonBusinessCost))}</div>
       <div className={classes.summary}>
-        {viewSummary(`사업${props.viewName} + 비사업${props.viewName} =`, sumData(TaxIncomInterface.final))}
+        {viewSummary(`사업${props.viewName} + 비사업${props.viewName} =`, sumData(TaxOutcomInterface.final))}
       </div>
     </div>
   );
 };
 
-export default LastYearIncome;
+export default TaxOutcome;

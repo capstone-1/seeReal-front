@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import "../../index.css";
 import InputBase from '@material-ui/core/InputBase';
-import * as CampaignInterface from "../../models/campaign";
+import * as campaignCostInterface from "../../models/campaignCost";
 import NumberFormat from "react-number-format";
 import DatePicker, {registerLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 interface Props {
-  addDataList(data : CampaignInterface.Campaign ) : void
-  data ? : CampaignInterface.Campaign
+  addDataList(data : campaignCostInterface.CampaignCost ) : void
+  data ? : campaignCostInterface.CampaignCost
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
         display: "flex",
         flexDirection: "column",
         
-        flex: 2,
+        flex: 1,
       },
       detailInput : {
           width : 612,
@@ -116,24 +116,57 @@ const useStyles = makeStyles((theme: Theme) =>
         fontFamily : "NanumSquareR, sans-serif",
         backgroundColor : "#e8f2ff",
         borderStyle : "none",
-        textAlign: "left",
+        textAlign: "center",
         justifyContent: "center",
         alignItems : "center",
+        
       },
+      numberFormat : {
+          width : 220,
+          height: 60,
+        fontFamily : "NanumSquareR, sans-serif",
+        color : "#000000",
+        fontSize : 24,
+        lineHeight : 1.13,
+        letterSpacing : -0.6,
+        backgroundColor :"#e8f2ff",
+        borderRadius : 5,
+        borderColor : "#e8f2ff",
+        textAlign: "center",
+        justifyContent: "center",
+        paddingLeft : 10,
+      },
+      surFix : {
+        fontFamily: "NanumSquareR, sans-serif",
+        lineHeight: 1.13,
+        fontSize: 24,
+        letterSpacing: -0.6,
+        color: "black",
+        paddingLeft : 10,
+        textAlign: "center",
+        justifyContent: "center",
+        display: "flex",
+        flexDirection: "column",
+        flex : 1,
+        
+    },
+    moneyFormat : {
+        display : "flex",
+        flexDirection : "row",
+    }
   })
 );
 
 
-const InputCampain: React.FC<Props> = (props) => {
+const InputCampainCost: React.FC<Props> = (props) => {
   const classes = useStyles();
-  const [campaign, setCampaign] = useState<CampaignInterface.Campaign>(props.data ? props.data :CampaignInterface.defaultData);
-  
+  const [campaign, setCampaign] = useState<campaignCostInterface.CampaignCost>(props.data ? props.data :campaignCostInterface.defaultData);
   useEffect(()=> {
   }, [campaign])
 
   const InputCampainTitle = (e : React.ChangeEvent<HTMLInputElement>) => {
-    const result = String(e.target.value).substring(0, 20);
-    setCampaign({...campaign, name : result})
+    const result = String(e.target.value).substring(0, 28);
+    setCampaign({...campaign, content : result})
   }
 
   const returnDateToString = (date : Date) => {
@@ -149,39 +182,45 @@ const InputCampain: React.FC<Props> = (props) => {
   }
 
   const onClick = () => {
-
-    if(campaign.start !== null && campaign.end !== null && campaign.name !== null){
+    if(campaign.useDate !== null && campaign.content !== null && campaign.cost !== undefined){
       props.addDataList(campaign);
-      setCampaign(CampaignInterface.defaultData);
+      setCampaign(campaignCostInterface.defaultData);
     }
   }
+
+//   const CostInput = (cost : number|undefined) => {
+//       return <div className={classes.moneyFormat}>
+//       <NumberFormat className={classes.numberFormat}  placeholder={"000,000,000,000"} value={cost} thousandSeparator 
+//         onValueChange={(values) => setCampaign({...campaign, "cost" : values.floatValue })}
+//         defaultValue={undefined} ></NumberFormat>
+//         <div className={classes.surFix}> 원</div>
+//         </div>;
+//   }
 
   return (
     <div className={classes.root}>
       <div className={classes.dateInput}>
           <div className  ={classes.dateBox}>
-          <DatePicker className = {classes.dateFont}  selected={campaign.start ? new Date(campaign.start) : null}
-             onChange={date=> InputCampainDate(date, "start" )}
+          <DatePicker className = {classes.dateFont}  selected={campaign.useDate ? new Date(campaign.useDate) : null}
+             onChange={date=> InputCampainDate(date, "useDate" )}
              placeholderText="YYYY-MM-DD"
              dateFormat="yyyy-MM-dd"></DatePicker>
           </div>
-          <div className={classes.textCenter}> ~ </div>
-          <div className ={classes.dateBox}>
-            <DatePicker className = {classes.dateFont}  selected={campaign.end ? new Date(campaign.end) : null}
-             onChange={date=> InputCampainDate(date, "end" )}
-             placeholderText="YYYY-MM-DD"
-             dateFormat="yyyy-MM-dd"></DatePicker>
-            </div>
       </div>
       <div className={classes.detailInput}> 
       <InputBase className={classes.contents} inputProps={{ 'aria-label': 'naked' }} 
-      placeholder= "캠페인 이름은 20글자로 제한하겠습니다" defaultValue={campaign.name}
-      value={campaign.name}
+      placeholder= "사용내역은 28글자로 제한하겠습니다" 
+      value={campaign.content}
       onChange={InputCampainTitle} id="text"></InputBase>
       </div>
+      <div className={classes.moneyFormat}>
+      <NumberFormat className={classes.numberFormat}  placeholder={"000,000,000,000"} value={campaign.cost } thousandSeparator 
+        onValueChange={(values) => setCampaign({...campaign, "cost" : values.floatValue })} defaultValue={undefined} ></NumberFormat>
+        <div className={classes.surFix}> 원</div>
+        </div>
       <button className={classes.button} onClick={onClick}> 입력</button>
     </div>
   );
 };
 
-export default InputCampain;
+export default InputCampainCost;
