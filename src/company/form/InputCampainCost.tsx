@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 1300,
       height: 60,
     //   border: "1px solid #73a8ed",
-      display : "inline-flex",
+      display : "flex",
       flexDirection : 'row',
       justifyContent : "space-around",
 

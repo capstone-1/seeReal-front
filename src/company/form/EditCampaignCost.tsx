@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 1300,
       height: 60,
       borderBottom: "2px solid #ededed",
-      display : "inline-flex",
+      display : "flex",
       flexDirection : 'row',
       justifyContent : "space-around",
       alignItems : "center",

@@ -16,40 +16,39 @@ import LastYearMainActivity from "./company/input/LastYearMainActivity";
 import InputCampainCost from "./company/form/InputCampainCost";
 import EditCampaignCost from "./company/form/EditCampaignCost";
 import CampaignCOst from "./company/input/CampaignCost";
-
+import Login from "./login/Login";
+import LoginFailModal from "./login/LoginFailModal";
+import AppBar from "./AppBar/AppBar";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import CompanyInput from "./Screen/CompanyInput";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: 50,
+      display : "flex",
+      flexDirection : "column",
+      alignItems : "center",
+      justifyContent : "center",
+      marginTop : 100,
     },
+    test : {
+      margin : 300,
+    }
   })
 );
 
 function App() {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <CampaignCOst />
-      {/* <LastYearMainActivity />  */}
-       <Campaign />
-       {/* <TaxIncome viewName="수익" /> */}
-       {/* <br></br>
-       <br></br>
-       <br></br>
-      <TaxIncome viewName="수익" />
-      <TaxOutcome viewName="지출" />
-      <EditCampain />
-      <br></br>
-      <br></br>
-      <InputCampain />
-      <br></br>
-      <br></br>
-      <br></br>
-      <LastYearIncome viewName="수익" />
-      <br></br>
-      <AssetStatus />
-      <br></br>
-      <ActiveStatus /> */}
+    <div>
+      <BrowserRouter>
+      <AppBar/>
+      <div className={classes.root}>
+        <Switch>
+          <Route exact path="/" component={CompanyInput}/>
+          <Route exact path="/signin" component={Login} />
+        </Switch>
+      </div>
+      </BrowserRouter>
     </div>
   );
 }

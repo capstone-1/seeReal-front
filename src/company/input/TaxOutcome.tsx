@@ -6,6 +6,8 @@ import * as TaxOutcomInterface from "../../models/taxOutcome";
 import NumberFormat from "react-number-format";
 interface Props {
   viewName : string ;
+  data : TaxOutcomInterface.TaxOutcome;
+  setData (data : TaxOutcomInterface.TaxOutcome) : void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -196,22 +198,41 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: "row",
             marginRight: 148,
         
+    },
+    subTitle : {
+      fontFamily: "NanumSquareB, sans-serif",
+      lineHeight: 1.14,
+      fontSize: 28,
+      letterSpacing: -0.7,
+      textAlign : "left",
+      marginBottom : 20,
     }
   })
 );
 
 const TaxOutcome: React.FC<Props> = (props) => {
   const classes = useStyles();
-  const [dataResult, setDataResult] = useState<TaxOutcomInterface.TaxOutcome>(TaxOutcomInterface.defaultData);
+  // const [dataResult, setDataResult] = useState<TaxOutcomInterface.TaxOutcome>(TaxOutcomInterface.defaultData);
 
-  useEffect( ()=> {
-  },[dataResult]);
+
   const updateResult = (value :  number | undefined, fieldName : string) => {
-      setDataResult({...dataResult, [fieldName]: value === undefined ? 0 : value})
+      // setDataResult({...dataResult, [fieldName]: value === undefined ? 0 : value})
+      props.setData({...props.data, [fieldName]: value === undefined ? 0 : value})
   } 
   
   const inputSummary = (title: string, fieldName: string) => {
-    const dataMap = new Map(Object.entries(dataResult));
+    // const dataMap = new Map(Object.entries(dataResult));
+    // return (
+    //   <>
+    //     <div className={classes.summaryTitle}>{title}</div>
+    //     <div  className={classes.setting} >
+    //     <NumberFormat className={classes.moneyDetail}  placeholder={"000,000,000,000"} value={dataMap.get(fieldName) ? Number(dataMap.get(fieldName)) : undefined} thousandSeparator 
+    //     onValueChange={(values) => updateResult(values.floatValue, fieldName)} isNumericString={true} ></NumberFormat>
+    //     <div className={classes.surFix2}> 원</div>
+    //     </div>
+    //   </>
+    // );
+    const dataMap = new Map(Object.entries(props.data));
     return (
       <>
         <div className={classes.summaryTitle}>{title}</div>
@@ -233,7 +254,18 @@ const TaxOutcome: React.FC<Props> = (props) => {
     );
   };
   const viewContents = (middleTitle: string, fieldName: string) => {
-    const dataMap = new Map(Object.entries(dataResult));
+    // const dataMap = new Map(Object.entries(dataResult));
+    // return (
+    //   <div className={classes.flexRow}>
+    //     <div className={classes.contentTitle}>{middleTitle}</div>
+    //     <div className={classes.money2}>
+    //     <NumberFormat className={classes.moneyDetail} placeholder={"000,000,000,000"} value={dataMap.get(fieldName) ? Number(dataMap.get(fieldName)) : undefined} thousandSeparator 
+    //     onValueChange={(values) => updateResult(values.floatValue, fieldName)} isNumericString={true} ></NumberFormat>
+    //     <div className={classes.surFix}> 원</div>
+    //     </div>
+    //   </div>
+    // );
+    const dataMap = new Map(Object.entries(props.data));
     return (
       <div className={classes.flexRow}>
         <div className={classes.contentTitle}>{middleTitle}</div>
@@ -262,8 +294,15 @@ const TaxOutcome: React.FC<Props> = (props) => {
     );
   }
   const sumData  = (input: any) => {
+    // const keyList = Object.keys(input);
+    // const dataMap = new Map(Object.entries(dataResult));
+    // let sum = 0;
+    // keyList.map(value => {
+    //   sum += dataMap.get(value) ? dataMap.get(value) : 0
+    // });
+    // return Number(sum);
     const keyList = Object.keys(input);
-    const dataMap = new Map(Object.entries(dataResult));
+    const dataMap = new Map(Object.entries(props.data));
     let sum = 0;
     keyList.map(value => {
       sum += dataMap.get(value) ? dataMap.get(value) : 0
@@ -273,6 +312,7 @@ const TaxOutcome: React.FC<Props> = (props) => {
 
   return (
     <div className={classes.root}>
+      <div className={classes.subTitle}> 지난 해 지출내역</div>
       <div className={classes.carryForward}>
         {inputSummary("차기이월액", "carriedMonth")}
       </div>
