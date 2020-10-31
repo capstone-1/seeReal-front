@@ -45,30 +45,30 @@ const LastYearMainActivity: React.FC<Props> = (props) => {
     const classes = useStyles();
     const [activityData, setActivityData] = useState<Array<ActivityInterface.Activity>>([ActivityInterface.defaultData,ActivityInterface.defaultData,ActivityInterface.defaultData]);
     const updateActivityData =(data: ActivityInterface.Activity, index: number) => {
-        // const result = activityData.map((value, idx) => {if(idx === index){
-        //     return data
-        // }else {
-        //     return value
-        // }})
-        // setActivityData(result)
-        const result = props.data.map((value, idx) => {if(idx === index){
+        const result = activityData.map((value, idx) => {if(idx === index){
             return data
         }else {
             return value
         }})
-        props.setDataList(result)
+        setActivityData(result)
+        // const result = props.data.map((value, idx) => {if(idx === index){
+        //     return data
+        // }else {
+        //     return value
+        // }})
+        // props.setDataList(result)
     }
 
     return <div>
         <div className={classes.title}> 지난 해 주요 활동 보고</div>
         <div className={classes.subTitle}>주요 활동은 최대 3개까지 입력 가능합니다.</div>
         {
-            // activityData.map((value,idx) => {
-            //     return <ActiveStatus updateData={updateActivityData} data={value} index={idx}/>
-            // })
-            props.data.map((value,idx) => {
+            activityData.map((value,idx) => {
                 return <ActiveStatus updateData={updateActivityData} data={value} index={idx}/>
             })
+            // props.data.map((value,idx) => {
+            //     return <ActiveStatus updateData={updateActivityData} data={value} index={idx}/>
+            // })
         }
     </div>
 }

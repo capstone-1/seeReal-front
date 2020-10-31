@@ -7,8 +7,8 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import "../../index.css";
 import LineIcon from "../../resources/icons/campaign_line_obt.png";
 interface Props {
-    data:Array<CampaignCostInterface.CampaignCost>;
-    setDataList(data : Array<CampaignCostInterface.CampaignCost> ) : void;
+    // data:Array<CampaignCostInterface.CampaignCost>;
+    // setDataList(data : Array<CampaignCostInterface.CampaignCost> ) : void;
 }
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,66 +46,49 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 const Campaign: React.FC<Props> = (props) => {
     const classes = useStyles();
-    const [campaignData, setCampaignData] = useState<Array<CampaignCostInterface.CampaignCost>>([]);
+    const [campaignCostData, setCampaignCostData] = useState<Array<CampaignCostInterface.CampaignCost>>([]);
 
 
-    const addCampaignData = (data : CampaignCostInterface.CampaignCost) => {
-        // setCampaignData(campaignData.concat(data));
-        props.setDataList(props.data.concat(data));
+    const addCampaignCostData = (data : CampaignCostInterface.CampaignCost) => {
+        setCampaignCostData(campaignCostData.concat(data));
     }
 
-    const deleteCampaignData = (idx : number) => {
+    const deleteCampaignCostData = (idx : number) => {
         console.log(idx)
-        // if(idx > -1){
-        //     const result = campaignData.filter((value,index) => index !== idx)
-        //     // wht campaignData.splice(idx,1) 도 동일하게 제거하는건데 먹히지 않았을까
-        //     setCampaignData(result)
-        //     console.log(campaignData)
-        // }
         if(idx > -1){
-            const result = props.data.filter((value,index) => index !== idx)
-            // wht campaignData.splice(idx,1) 도 동일하게 제거하는건데 먹히지 않았을까
-            props.setDataList(result)
+            const result = campaignCostData.filter((value,index) => index !== idx)
+            // wht campaignCostData.splice(idx,1) 도 동일하게 제거하는건데 먹히지 않았을까
+            setCampaignCostData(result)
+            console.log(campaignCostData)
         }
     }
 
-    const changeCampaignData = (idx : number, data : CampaignCostInterface.CampaignCost) => {
-        console.log(data);
-        // const result = campaignData.map((value, index) => {if(index === idx){
-        //     return data
-        // }else {
-        //     return value
-        // }})
-        // setCampaignData(result)
-        const result = props.data.map((value, index) => {if(index === idx){
+    const changeCampaignCostData = (idx : number, data : CampaignCostInterface.CampaignCost) => {
+        const result = campaignCostData.map((value, index) => {if(index === idx){
             return data
         }else {
             return value
         }})
-        props.setDataList(result)
+        setCampaignCostData(result)
     }
 
-    const ViewCurrentData = () => {
-        // return (campaignData.map((value,idx)=> {
-        //    return <EidtCampaignCost data={value} key={idx} indexOfData={idx} deleteData={deleteCampaignData}
-        //    updateData={changeCampaignData} ></EidtCampaignCost>
-        // }));
-        return (props.data.map((value,idx)=> {
-            return <EidtCampaignCost data={value} key={idx} indexOfData={idx} deleteData={deleteCampaignData}
-            updateData={changeCampaignData} ></EidtCampaignCost>
-         }));
+    const ViewCurrentCostData = () => {
+        return (campaignCostData.map((value,idx)=> {
+           return <EidtCampaignCost data={value} key={idx} indexOfData={idx} deleteData={deleteCampaignCostData}
+           updateData={changeCampaignCostData} ></EidtCampaignCost>
+        }));
     }
 
     return <div>
         <div className={classes.title}> 캠페인 모금액 사용 내역</div>
         <div className={classes.subTitle}>캠페인 모금액 사용 내역</div>
-        <InputCampainCost addDataList={addCampaignData} />
+        <InputCampainCost addDataList={addCampaignCostData} />
         <img src={LineIcon} className={classes.imgBox}   alt="profile"></img>
         <br></br>
         <br></br>
         <br></br>
         {
-           ViewCurrentData()
+           ViewCurrentCostData()
         }
     </div>
 }

@@ -7,6 +7,9 @@ import InputBase from '@material-ui/core/InputBase';
 import CheckIcon from "../resources/icons/acctive_check_btn.png";
 import LoginFailModal from "./LoginFailModal";
 import Modal from '@material-ui/core/Modal';
+import axios from "axios";
+import apiPath from  "../apiPath";
+import { useHistory } from 'react-router-dom'
 interface Props {}
 
 
@@ -109,6 +112,28 @@ const useStyles = makeStyles((theme: Theme) =>
       display : "flex",
       alignItems : "center",
       justifyContent : "center",
+    },
+    topTitle : {
+      width : "100%",
+      fontFamily: "NanumSquareB, sans-serif",
+      fontSize : 52,
+      lineHeight : 1.13,
+      letterSpacing : -1.3,
+      textAlign : "left",
+      marginBottom : 24,
+    },
+    topBar: {
+      width : 1320,
+      height : 8,
+      borderRadius : 4,
+      backgroundColor : "#22479f",
+      marginBottom : 100,
+    },
+    main : {
+      display : "flex",
+      flexDirection : "column",
+      justifyContent : "center",
+      alignItems : "center",
     }
   })
 );
@@ -119,7 +144,7 @@ const Login: React.FC<Props> = (props) => {
     const [checkSaveId, setCheckSaveId] = useState(false);
     const [loginFail, setLoginFail] = useState(false);
     const classes = useStyles();
-
+    const history = useHistory();
     const inputContent = (e : React.ChangeEvent<HTMLInputElement>) => {
         setId(e.target.value)
     }
@@ -127,8 +152,29 @@ const Login: React.FC<Props> = (props) => {
     const inputPassword  = (e : React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
     }
-    const clickLogin = () => {
-      setLoginFail(true);
+    const clickLogin = async () => {
+      try {
+        const result = await axios.post(apiPath.signIn(), {registerNumber : id, password : password}) ;
+        const header = result.headers;
+        if(result.status === 200){
+          console.log("===========================================")
+          console.log(header.authorization)
+          console.log("===========================================")
+          localStorage.setItem("jwtToken", header.authorization);
+          history.push("/");
+          window.location.reload(false);
+        }else{
+          console.log(result);
+          setLoginFail(true);
+          setId("");
+          setPassword("");
+        }
+      } catch (error) {
+        setLoginFail(true);
+        localStorage.setItem("jwtToken", "123");
+        setId("");
+        setPassword("");
+      }
     }
     const modalClose = () => {
       setLoginFail(false);
@@ -141,7 +187,9 @@ const Login: React.FC<Props> = (props) => {
 
     }
    
-    return <div> 
+    return <div className={classes.main}> 
+      <div className={classes.topTitle}>로그인</div>
+      <div className={classes.topBar}></div>
       <div className = {classes.root}>
         <div className={classes.infoContent}> 온라인 기부 플랫폼 '알기'를 방문해 주셔서 감사합니다</div>
         <div className={classes.inputBox}>
@@ -167,7 +215,7 @@ const Login: React.FC<Props> = (props) => {
         </div>
     </div>
     <button className={classes.loginButton} onClick={clickLogin}> 개인 기부자로 로그인하기</button>
-    <button className={classes.loginButton}> 기부단체로 로그인하기</button>
+    <button className={classes.loginButton} onClick={clickLogin}> 기부단체로 로그인하기</button>
     <Modal className={classes.modal} open={loginFail} onClose={modalClose}>
       <LoginFailModal closeModal={modalClose}/>
     </Modal>

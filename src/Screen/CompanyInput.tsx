@@ -13,6 +13,9 @@ import * as CampaignCostInterface from "../models/campaignCost";
 import * as ActivityInterface from "../models/activity";
 import * as TaxIncomInterface from "../models/taxIncome";
 import * as TaxOutcomInterface from "../models/taxOutcome";
+import Combination from "../company/input/Combination";
+import axios from "axios";
+import apiPath from "../apiPath";
 interface Props {
 }
 
@@ -90,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) =>
     nextButton : {
         width : 190,
         height : 68,
-        backgroundColor : "#22479f",
+        backgroundColor : "#ededed",
         fontFamily: "NanumSquareB, sans-serif",
         fontSize : 26,
         lineHeight : 1.15,
@@ -99,7 +102,7 @@ const useStyles = makeStyles((theme: Theme) =>
         justifyContent : "center",
         textAlign : "center",
         alignItems : "center",
-        color: "white",
+        color: "black",
         border : "none",
         borderRadius : 5,
     },
@@ -129,12 +132,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     contentSpace : {
         position: "relative",
-        marginBottom : 80,
+        marginBottom : 120,
     },
     contents : {
         display : "flex",
         flexDirection : "column",
         alignItems : "center",
+        justifyContent : "center",
+    },
+    space : {
+        display : "flex",
         justifyContent : "center",
     }
   })
@@ -155,6 +162,32 @@ const CompanyInput: React.FC<Props> = (props) => {
     const moveNextStep = () => {
         setCurrentState(currentState+1);
     }
+
+    const uploadData = async() => {
+        try {
+            const header = {
+                headers: {Authorization : localStorage.getItem("jwtToken")}
+            };
+            await axios.post(apiPath.addCompanyTaxIncome() , taxIncome, header);
+            console.log(taxIncome);
+            await axios.post(apiPath.addCompanyTaxOutcome() ,taxOutcome, header );
+            console.log(taxOutcome);
+            await axios.post(apiPath.addCompanyActivity() , {activity : mainActivity }, header );
+            await axios.post(apiPath.addCompanyCampaign() , {campaign :campaign }, header );
+            await axios.post(apiPath.addCompanyCampaignCost() , {campaignCost : campaignCost}, header );
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    const updateCombinationData = (activityData : Array<ActivityInterface.Activity>,
+        campaignData : Array<CampaignInterface.Campaign>,
+        campaignCostData : Array<CampaignCostInterface.CampaignCost> ) => {
+            setMainActivity(activityData);
+            setCamapign(campaignData);
+            setCampaignCost(campaignCostData);
+        }
 
     const TopTitle = () => {
         return  <div>
@@ -180,10 +213,10 @@ const CompanyInput: React.FC<Props> = (props) => {
         return <div className= {classes.contentsBox}>
             { SubTitleContents.length-1 === currentState ? 
                 <div className={classes.sendButtonBox}>
-                    <button className={classes.sendButton}> 제출하기</button>
+                    <button className={classes.sendButton} onClick={uploadData}> 제출하기</button>
                 </div> :
                 <div className={classes.nextButtonBox}>
-                    <button className={classes.nextButton} onClick={moveNextStep}> 저장하기</button>
+                    <button className={classes.nextButton} onClick={moveNextStep}> 다음</button>
                 </div>
             }
         </div>
@@ -195,16 +228,17 @@ const CompanyInput: React.FC<Props> = (props) => {
                 currentState === 0 ? <div>회의해야함</div> :
                     currentState === 1 ?  <div>
                         <div className={classes.contentSpace}>
-                            <TaxIncome viewName="수익" data={taxIncome} setData={setTaxIncome}/>
+                            <TaxIncome viewName="수익" setData={setTaxIncome} data={taxIncome}/>
                         </div>
                         <div className={classes.contentSpace}>
-                            <TaxOutcome viewName="지출" data={taxOutcome} setData={setTaxOutcome}/>
+                            <TaxOutcome viewName="지출" setData={setTaxOutcome} data={taxOutcome}/>
                         </div>
                     </div> :
-                        <div>
-                            <div className={classes.contentSpace}>
+                        <div className={classes.space}>
+                            <Combination setDataList={updateCombinationData}/>
+                            {/* <div className={classes.contentSpace}>
                                 <LastYearMainActivity data={mainActivity} setDataList={setMainActivity} />
-                            </div>
+                            </div> */}
                             {/* <div className={classes.contentSpace}>
                                 <Campaign data={campaign} setDataList={()=>setCamapign} />
                             </div> */}

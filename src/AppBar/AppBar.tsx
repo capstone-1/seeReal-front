@@ -4,7 +4,7 @@ import "../index.css";
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Link} from "react-router-dom"
+import { Link, useHistory} from "react-router-dom"
 interface Props {
 }
 
@@ -31,14 +31,26 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const MainBar: React.FC<Props> = (props) => {
-    
+    const history = useHistory();
     const classes = useStyles();
+    useEffect(()=>{
+    }, [localStorage.getItem("jwtToken")]);
 
+    const logOut = () => {
+        localStorage.removeItem("jwtToken");
+        history.push("/");
+        window.location.reload(false);
+
+    }
    
     return <AppBar className={classes.root}>
         <Toolbar className={classes.toolBar}>
         <div>로고 </div>
-        <Button className={classes.statusInfo} href="signin">로그인</Button>    
+        {
+            localStorage.getItem("jwtToken") ?
+            <Button className={classes.statusInfo} onClick={logOut}>{`로그아웃`}</Button>  :
+            <Button className={classes.statusInfo} href="signin">로그인</Button>
+        } 
         {/* <Button><Link to="/signin"> <div className={classes.statusInfo}></div>로그인</Link></Button> */}
         </Toolbar> 
     

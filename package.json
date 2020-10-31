@@ -45,5 +45,6 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.52"
-  }
+  },
+  "proxy" : "http://34.64.143.106:8080"
 }
