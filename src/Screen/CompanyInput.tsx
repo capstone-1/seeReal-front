@@ -172,9 +172,9 @@ const CompanyInput: React.FC<Props> = (props) => {
             console.log(taxIncome);
             await axios.post(apiPath.addCompanyTaxOutcome() ,taxOutcome, header );
             console.log(taxOutcome);
-            await axios.post(apiPath.addCompanyActivity() , {activity : mainActivity }, header );
-            await axios.post(apiPath.addCompanyCampaign() , {campaign :campaign }, header );
-            await axios.post(apiPath.addCompanyCampaignCost() , {campaignCost : campaignCost}, header );
+            await axios.post(apiPath.addCompanyActivity() , {activityRequests : mainActivity }, header );
+            await axios.post(apiPath.addCompanyCampaign() , {campaignRequests :campaign }, header );
+            await axios.post(apiPath.addCompanyCampaignCost() , {campaignCostRequests : campaignCost}, header );
         } catch (error) {
             console.log(error);
         }

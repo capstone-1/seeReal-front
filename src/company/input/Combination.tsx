@@ -104,6 +104,10 @@ const Combination: React.FC<Props> = (props) => {
         // props.setDataList(result)
     }
     const saveData = () => {
+        console.log("=======================================");
+        console.log(activityData);
+        console.log(campaignData);
+        console.log(campaignCostData);
         props.setDataList(activityData, campaignData, campaignCostData);
     }
 
@@ -215,7 +219,7 @@ const Combination: React.FC<Props> = (props) => {
     </div>
 
     <div className={classes.nextButtonBox}>
-                    <button className={classes.nextButton} onClick={()=> saveData}> 저장하기</button>
+                    <button className={classes.nextButton} onClick={ saveData}> 저장하기</button>
                 </div>
     </div>)
 }

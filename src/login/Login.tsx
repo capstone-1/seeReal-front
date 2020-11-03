@@ -171,7 +171,6 @@ const Login: React.FC<Props> = (props) => {
         }
       } catch (error) {
         setLoginFail(true);
-        localStorage.setItem("jwtToken", "123");
         setId("");
         setPassword("");
       }
