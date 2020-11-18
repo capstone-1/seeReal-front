@@ -23,6 +23,11 @@ code {
 }
 
 @font-face {
+  font-family: NanumSquareEB;
+  src: url("./resources/font/NanumSquareEB.ttf") format("truetype");
+}
+
+@font-face {
   font-family: NanumSquareB;
   src: url("./resources/font/NanumSquareB.ttf") format("truetype");
 }

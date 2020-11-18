@@ -28,6 +28,22 @@ export const addCompanyCampaignCost = () => {
     return `/organization/upload/campaign-cost`;
 }
 
+export const getDonationList = (size: number) => {
+    return `/regular-donation?size=${size}`;
+}
+
+export const getDonationPageData = (page: number, size: number, name: string ="") => {
+    return `/regular-donation?page=${page}&size=${size}&search=${name}`;
+}
+
+export const searchWithCategory = (page: number, size: number, category: string="") => {
+    return `/regular-donation/category?page=${page}&size=${size}&category=${category}`;
+}
+
+export const getDonationDetails = (id: number) => {
+    return `/regular-donation/${id}`;
+}
+
 
 
 
@@ -38,5 +54,9 @@ export default {
   addCompanyTaxOutcome,
   addCompanyActivity,
   addCompanyCampaign,
-  addCompanyCampaignCost
+  addCompanyCampaignCost,
+  getDonationList,
+  getDonationPageData,
+  searchWithCategory,
+  getDonationDetails
 };
