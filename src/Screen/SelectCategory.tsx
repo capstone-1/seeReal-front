@@ -17,6 +17,7 @@ import ArtIcon from "../resources/icons/category_culture&art.png";
 import EnvironmentIcon from "../resources/icons/category_environment.png";
 import EtcIcon from "../resources/icons/category_etc.png";
 import styled from "styled-components";
+import AnimalIcon from "../resources/icons/category_animal@2x.png";
 
 interface Props {
   setCategory(data: string): void;
@@ -102,6 +103,7 @@ const SelectCategory: React.FC<Props> = (props) => {
     health: HealthIcon,
     art: ArtIcon,
     environment: EnvironmentIcon,
+    animal: AnimalIcon,
     etc: EtcIcon,
   };
 
@@ -118,6 +120,7 @@ const SelectCategory: React.FC<Props> = (props) => {
     "health",
     "art",
     "environment",
+    "animal",
     "etc",
   ];
 

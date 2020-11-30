@@ -13,6 +13,7 @@ import apiPath from "../apiPath";
 import axios from "axios";
 import { setDefaultLocale } from "react-datepicker";
 import { donationSummary, PageLink } from "../models/donationSummary";
+import { Link } from "react-router-dom";
 
 interface Props {}
 
@@ -83,6 +84,10 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       color: "white",
     },
+    link: {
+      textDecoration: "none",
+      color: "black",
+    },
   })
 );
 
@@ -90,6 +95,10 @@ const DonationMain: React.FC<Props> = (props) => {
   const classes = useStyles();
   const testUrl =
     "https://capstone-seereal.s3.ap-northeast-2.amazonaws.com/donation/13/image";
+  const testUrl2 =
+    "https://capstone-seereal.s3.ap-northeast-2.amazonaws.com/donation/16/image";
+  const testUrl3 =
+    "https://capstone-seereal.s3.ap-northeast-2.amazonaws.com/donation/19/image";
   const sliderSetting = {
     arrows: false,
     dots: true,
@@ -100,7 +109,7 @@ const DonationMain: React.FC<Props> = (props) => {
   };
   const [searchInput, setSearchInput] = useState("");
   const [category, setCategory] = useState("");
-  const images = [{ url: testUrl }, { url: testUrl }, { url: testUrl }];
+  const images = [{ url: testUrl }, { url: testUrl2 }, { url: testUrl3 }];
   const onClick = (idx: number) => {
     alert(idx);
   };
@@ -160,11 +169,20 @@ const DonationMain: React.FC<Props> = (props) => {
         const result = await axios.get(
           apiPath.searchWithCategory(currentPage - 1, 9, category)
         );
-        setDonationData(
-          result.data._embedded.simpleDonationResponseDtoList
-            ? result.data._embedded.simpleDonationResponseDtoList
-            : []
-        );
+        console.log("DATA");
+        // console.log(result.data._embedded.simpleDonationResponseDtoList);
+        if (result.data._embedded !== undefined) {
+          console.log("true");
+          setDonationData(result.data._embedded.simpleDonationResponseDtoList);
+        } else {
+          console.log("false");
+          setDonationData([]);
+        }
+        // setDonationData(
+        //   result.data._embedded.simpleDonationResponseDtoList
+        //     ? result.data._embedded.simpleDonationResponseDtoList
+        //     : []
+        // );
         setPageCount(
           result.data.page.totalPages ? result.data.page.totalPages : 0
         );
@@ -181,11 +199,13 @@ const DonationMain: React.FC<Props> = (props) => {
         const result = await axios.get(
           apiPath.getDonationPageData(currentPage - 1, 9, searchInput)
         );
-        setDonationData(
-          result.data._embedded.simpleDonationResponseDtoList
-            ? result.data._embedded.simpleDonationResponseDtoList
-            : []
-        );
+        if (result.data._embedded !== undefined) {
+          console.log("true");
+          setDonationData(result.data._embedded.simpleDonationResponseDtoList);
+        } else {
+          console.log("false");
+          setDonationData([]);
+        }
         setPageCount(
           result.data.page.totalPages ? result.data.page.totalPages : 0
         );
@@ -230,9 +250,11 @@ const DonationMain: React.FC<Props> = (props) => {
       <div className={classes.content}>
         {donationData.map((value, idx) => {
           return (
-            <div className={classes.contentDetailBox}>
-              <CamapginSummary data={value} />
-            </div>
+            <Link to={`/campaignDetail/${value.id}`} className={classes.link}>
+              <div className={classes.contentDetailBox}>
+                <CamapginSummary data={value} />
+              </div>
+            </Link>
           );
         })}
       </div>

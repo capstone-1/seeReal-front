@@ -9,6 +9,8 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import CompanyInput from "./Screen/CompanyInput";
 import DonationMain from "./Screen/DonationMain";
 import CampaignDetail from "./Screen/CampaignDetail";
+import CampaignMain from "./Screen/CampaignMain";
+import RealCampaignDetail from "./Screen/RealCampaignDetail";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -32,13 +34,19 @@ function App() {
         <AppBar />
         <div className={classes.root}>
           <Switch>
-            <Route exact path="/" component={CompanyInput} />
+            <Route exact path="/" component={DonationMain} />
             <Route exact path="/signin" component={Login} />
-            <Route exact path="/donation" component={DonationMain} />
+            <Route exact path="/company-input" component={CompanyInput} />
+            <Route exact path="/campaign" component={CampaignMain} />
             <Route
               path="/campaignDetail/:ids"
               exact
               component={CampaignDetail}
+            />
+            <Route
+              path="/realcampaignDetail/:ids"
+              exact
+              component={RealCampaignDetail}
             />
           </Switch>
         </div>

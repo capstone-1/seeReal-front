@@ -205,7 +205,7 @@ const Login: React.FC<Props> = (props) => {
           <div className={classes.userInput}>
             <InputBase className={classes.password}   type="Password"
               value={password}
-              onChange={inputPassword} id="text"></InputBase>
+              onChange={inputPassword} id="text1"></InputBase>
           </div>
         </div>
         <div className={classes.saveId}> 

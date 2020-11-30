@@ -11,6 +11,7 @@ import HealthIcon from "../resources/icons/category_health.png";
 import ArtIcon from "../resources/icons/category_culture&art.png";
 import EnvironmentIcon from "../resources/icons/category_environment.png";
 import EtcIcon from "../resources/icons/category_etc.png";
+import AnimalIcon from "../resources/icons/category_animal@2x.png";
 
 const icons = {
     emergency : EmergencyIcon,
@@ -24,6 +25,7 @@ const icons = {
     health: HealthIcon,
     art : ArtIcon,
     environment : EnvironmentIcon,
+    animal: AnimalIcon,
     etc: EtcIcon 
 }
 
