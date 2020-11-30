@@ -109,6 +109,7 @@ const ActiveStatus: React.FC<Props> = (props) => {
   const [activityData, setActivityData] = useState<ActivityInterface.Activity>(ActivityInterface.defaultData);
   const InputActivityData = (value : string, fieldName : string, limit: number) => {
     const result = value.substring(0, limit);
+    console.log(result);
     setActivityData({...activityData, [fieldName] : result})
   }
   useEffect(()=> {
@@ -122,8 +123,8 @@ const ActiveStatus: React.FC<Props> = (props) => {
       <div className={classes.titlebox}>
         <div className={classes.titleName}> 활동명 </div>
         <InputBase className={classes.titleInput} inputProps={{ 'aria-label': 'naked' }} 
-      placeholder= "캠페인 명을 적어주세요" defaultValue={props.data.name}
-      value={props.data.name}
+      placeholder= "캠페인 명을 적어주세요" defaultValue={activityData.name}
+      value={activityData.name}
       onChange={e => InputActivityData(e.target.value, "name", 20)}
      ></InputBase>
         {/* <div className={classes.titleInput}> 캠페인명을 적어주세요 </div> */}
@@ -133,8 +134,8 @@ const ActiveStatus: React.FC<Props> = (props) => {
           <div className={classes.contentsTitle}>활동내용</div>
           <div className={classes.contentsBox}>
           <InputBase className={classes.contents} inputProps={{ 'aria-label': 'naked' }} 
-      defaultValue={props.data.content}
-      value={props.data.content} rows={4}
+      defaultValue={activityData.content}
+      value={activityData.content} rows={4}
       onChange={e => InputActivityData(e.target.value, "content", 100)}  multiline={true} />
   <div className={classes.countLine}>{`${props.data.content.length}/100`}</div>
   </div>
@@ -143,8 +144,8 @@ const ActiveStatus: React.FC<Props> = (props) => {
           <div className={classes.contentsTitle}>성과</div>
           <div className={classes.contentsBox}>
           <InputBase className={classes.contents} inputProps={{ 'aria-label': 'naked' }} 
-      defaultValue={props.data.performance}
-      value={props.data.performance} rows={4}
+      defaultValue={activityData.performance}
+      value={activityData.performance} rows={4}
       onChange={e => InputActivityData(e.target.value, "performance", 100)}  multiline={true} />
   <div className={classes.countLine}>{`${props.data.performance.length}/100`}</div>
   </div>
@@ -153,8 +154,8 @@ const ActiveStatus: React.FC<Props> = (props) => {
           <div className={classes.contentsTitle}>한계</div>
           <div className={classes.contentsBox}>
           <InputBase className={classes.contents} inputProps={{ 'aria-label': 'naked' }} 
-      defaultValue={props.data.limitation}
-      value={props.data.limitation} rows={4}
+      defaultValue={activityData.limitation}
+      value={activityData.limitation} rows={4}
       onChange={e => InputActivityData(e.target.value, "limitation", 100)}  multiline={true} />
   <div className={classes.countLine}>{`${props.data.limitation.length}/100`}</div>
   </div>

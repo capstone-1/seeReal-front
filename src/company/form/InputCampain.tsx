@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 1300,
       height: 60,
     //   border: "1px solid #73a8ed",
-      display : "inline-flex",
+      display : "flex",
       flexDirection : 'row',
       justifyContent : "space-around",
 
@@ -177,7 +177,7 @@ const InputCampain: React.FC<Props> = (props) => {
       <InputBase className={classes.contents} inputProps={{ 'aria-label': 'naked' }} 
       placeholder= "캠페인 이름은 20글자로 제한하겠습니다" defaultValue={campaign.name}
       value={campaign.name}
-      onChange={InputCampainTitle} id="text"></InputBase>
+      onChange={InputCampainTitle} ></InputBase>
       </div>
       <button className={classes.button} onClick={onClick}> 입력</button>
     </div>
