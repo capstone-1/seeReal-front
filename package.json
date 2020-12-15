@@ -26,6 +26,7 @@
     "react-scripts": "3.4.3",
     "react-simple-image-slider": "^1.0.4",
     "react-slick": "^0.27.13",
+    "recharts": "^1.8.5",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.2.1",
     "typescript": "~3.7.2"
@@ -52,7 +53,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "^16.9.52"
+    "@types/react": "^16.9.52",
+    "@types/recharts": "^1.8.18"
   },
   "proxy": "http://34.64.143.106:8080"
 }

@@ -131,6 +131,8 @@ const SelectCategory: React.FC<Props> = (props) => {
   return (
     <StyledSlider className={classes.slider} {...sliderSetting}>
       {categories.map((value, idx) => {
+        console.log(value);
+        console.log(data.get(value));
         return (
           <div className={classes.imageSlider}>
             <img

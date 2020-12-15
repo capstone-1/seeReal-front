@@ -11,6 +11,7 @@ import DonationMain from "./Screen/DonationMain";
 import CampaignDetail from "./Screen/CampaignDetail";
 import CampaignMain from "./Screen/CampaignMain";
 import RealCampaignDetail from "./Screen/RealCampaignDetail";
+import Portfolio from "./Screen/Portfolio";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -48,6 +49,7 @@ function App() {
               exact
               component={RealCampaignDetail}
             />
+            <Route path="/portfolio" exact component={Portfolio} />
           </Switch>
         </div>
       </BrowserRouter>

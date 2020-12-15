@@ -93,12 +93,11 @@ const MainBar: React.FC<Props> = (props) => {
           </Link>
 
           <Link to={`/campaign`} className={classes.link}>
-            <div className={classes.topText}> 캠페인 기부</div>
-          </Link>
-          <Link to={`/`} className={classes.link}>
             <div className={classes.topText}> 정기 기부</div>
           </Link>
-          <div className={classes.topText}> 포트폴리오</div>
+          <Link to={`/portfolio`} className={classes.link}>
+            <div className={classes.topText}> 포트폴리오</div>
+          </Link>
           <Link to={`/company-input`} className={classes.link}>
             <div className={classes.topText}> 기업정보추가</div>
           </Link>

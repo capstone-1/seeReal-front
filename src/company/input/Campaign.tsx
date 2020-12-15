@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import * as CampaignInterface from "../../models/campaign";
-import InputCampain from "../form/InputCampain";
-import EidtCampain from "../form/EidtCampain";
 import EditCampain from "../form/EidtCampain";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import "../../index.css";
 import LineIcon from "../../resources/icons/campaign_line_obt.png";
+import InputCampain from "../form/InputCampain";
 
 interface Props {
-    data : Array<CampaignInterface.Campaign>;
-    setDataList(data : Array<CampaignInterface.Campaign>) : void;
+    // data : Array<CampaignInterface.Campaign>;
+    // setDataList(data : Array<CampaignInterface.Campaign>) : void;
 }
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,13 +48,13 @@ const Campaign: React.FC<Props> = (props) => {
     const classes = useStyles();
     const [campaignData, setCampaignData] = useState<Array<CampaignInterface.Campaign>>([]);
     useEffect(()=> {
-        setCampaignData(props.data);
+        // setCampaignData(props.data);
     },[]);
-    useEffect(()=>{
-        props.setDataList(campaignData);
-    },[campaignData]);
+    // useEffect(()=>{
+    //     props.setDataList(campaignData);
+    // },[campaignData]);
     const addCampaignData = (data : CampaignInterface.Campaign) => {
-        // setCampaignData(campaignData.concat(data));
+        setCampaignData(campaignData.concat(data));
         // props.setDataList(props.data.concat(data));
     }
 
@@ -102,7 +101,7 @@ const Campaign: React.FC<Props> = (props) => {
     return <div>
         <div className={classes.title}> 중장기 캠페인 진행 보고</div>
         <div className={classes.subTitle}>캠페인 내역은 현재 분기의 6개월 전 내역까지만 반영됩니다.</div>
-        {/* <InputCampain addDataList={()=>addCampaignData} /> */}
+        <InputCampain addDataList={()=>addCampaignData} />
         <img src={LineIcon} className={classes.imgBox}   alt="profile"></img>
         <br></br>
         <br></br>

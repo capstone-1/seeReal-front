@@ -209,16 +209,6 @@ const IntroducePage: React.FC<Props> = (props) => {
                 </div>
               );
             })}
-            {/* <div className={classes.tableContentBox}>
-              <div
-                className={classes.tableContent}
-              >{`아동 개별 상담sdasdsad`}</div>
-              <div className={classes.tableContent}>{`8명`}</div>
-              <div className={classes.tableContent}>{`2,010,000원`}</div>
-              <div className={classes.tableContent}>
-                {`asdsadsadsadsadsadsadsadsadsa`}{" "}
-              </div>
-            </div> */}
           </div>
           <div className={classes.promiseBox}>
             <div className={classes.promiseContent}>
